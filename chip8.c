@@ -10,7 +10,7 @@
 // 7. Read keypad
 // 8. Goto step 5
 
-int main()
+int main(int argc, char** argv)
 {
     unsigned char memory[ 4096 ]; // 4K 8-bit memory
     unsigned char V[ 16 ];        // 16 8-bit registers (V0-VF)
@@ -27,4 +27,30 @@ int main()
     unsigned short stack_ptr;
 
     unsigned char keypad[ 16 ];
+
+    // Load supplied ROM
+    FILE *file = fopen( argv[1], "rb" );
+    if( file == NULL )
+    {
+        printf( "Failed to open ROM" );
+        return 1;
+    }
+
+    // Determine the ROM file size
+    fseek( file, 0L, SEEK_END );
+    int fsize = ftell( file );
+    fseek( file, 0L, SEEK_SET );
+
+    // Store ROM in memory
+    fread( memory+0x200, fsize, 1, file );
+    fclose( file );
+
+    pc = 0x200;
+    while( pc < ( fsize + 0x200 ) )
+    {
+        // TODO: Read the opcode
+        pc += 2;
+    }
+
+    return 0;
 }
