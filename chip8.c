@@ -75,7 +75,6 @@ int main(int argc, char** argv)
         switch( opcode & 0xF000 )
         {
             case 0x0000:
-                printf( "Execute subroutine at address: %04x", opcode & 0x0FFF );
                 continue;
             case 0x1000:
                 nnn = ( opcode & 0x0FFF );
