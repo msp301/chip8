@@ -49,6 +49,9 @@ int main(int argc, char** argv)
 
     for( pc = 0x200; pc < ( fsize + 0x200 ); pc += 2 )
     {
+        unsigned char x;
+        unsigned char kk;
+
         opcode = memory[ pc ] << 8 | memory[ pc + 1 ];
 
         printf( "\n%03x | %04x | ", pc, opcode );
@@ -80,7 +83,16 @@ int main(int argc, char** argv)
                 printf( "Call subroutine at address : %04x", opcode & 0x0FFF );
                 continue;
             case 0x3000:
-                printf( "3xkk: Skip next if Vx = kk" );
+                x  = ( opcode & 0x0F00 ) >> 8;
+                kk = ( opcode & 0x00FF );
+
+                printf( "3xkk: Skip next if V%d = %02x", x, kk );
+
+                if( V[ x ] == kk )
+                {
+                    pc += 2;
+                }
+
                 continue;
             case 0x4000:
                 printf( "4xkk: Skip next if Vx != kk" );
@@ -89,7 +101,13 @@ int main(int argc, char** argv)
                 printf( "5xy0: Skip next if Vx = Vy" );
                 continue;
             case 0x6000:
-                printf( "6xkk: Set Vx = kk" );
+                x  = ( opcode & 0x0F00 ) >> 8;
+                kk = ( opcode & 0x00FF );
+
+                printf( "6xkk: Set V%d = %02x", x, kk );
+
+                V[ x ] = kk;
+
                 continue;
             case 0x7000:
                 printf( "7xkk: Set Vx = Vx + kk" );
