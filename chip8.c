@@ -52,6 +52,7 @@ int main(int argc, char** argv)
         unsigned char x;
         unsigned char y;
         unsigned char kk;
+        unsigned short result;
 
         opcode = memory[ pc ] << 8 | memory[ pc + 1 ];
 
@@ -138,34 +139,70 @@ int main(int argc, char** argv)
 
                 continue;
             case 0x8000:
+                x = ( opcode & 0x0F00 ) >> 8;
+                y = ( opcode & 0x00F0 ) >> 4;
+
                 switch( opcode & 0x000F )
                 {
                     case 0x0000:
-                        printf( "8xy0: Set Vx = Vy" );
+                        printf( "8xy0: Set V%X = V%X", x, y );
+
+                        V[ x ] = V[ y ];
+
                         continue;
                     case 0x0001:
-                        printf( "8xy1: Set Vx = Vx OR Vy" );
+                        printf( "8xy1: Set V%X = V%X OR V%X", x, x, y );
+
+                        V[ x ] = V[ x ] | V[ y ];
+
                         continue;
                     case 0x0002:
-                        printf( "8xy2: Set Vx = Vx AND Vy" );
+                        printf( "8xy2: Set V%X = V%X AND V%X", x, x, y );
+
+                        V[ x ] = V[ x ] & V[ y ];
+
                         continue;
                     case 0x0003:
-                        printf( "8xy3: Set Vx = Vx XOR Vy" );
+                        printf( "8xy3: Set V%X = V%X XOR V%X", x, x, y );
+
+                        V[ x ] = V[ x ] ^ V[ y ];
+
                         continue;
                     case 0x0004:
-                        printf( "8xy4: Set Vx = Vx + Vy, Set VF = carry" );
+                        printf( "8xy4: Set V%X += V%X, Set VF = carry", x, y );
+
+                        result = V[ x ] + V[ y ];
+                        V[ x ] = result & 0x00FF;
+                        V[ 0xF ] = ( result > 0x00FF ) ? 1 : 0;
+
                         continue;
                     case 0x0005:
-                        printf( "8xy5: Set Vx = Vx - Vy, Set VF = NOT borrow" );
+                        printf( "8xy5: Set V%X -= V%X, Set VF = NOT borrow", x, y );
+
+                        V[ 0xF ] = ( V[ x ] > V[ y ] ) ? 1 : 0;
+                        V[ x ] -= V[ y ];
+
                         continue;
                     case 0x0006:
-                        printf( "8xy6: Set Vx = Vx SHR 1" );
+                        printf( "8xy6: Set V%X = Vx SHR 1", x );
+
+                        V[ 0xF ] = V[ x ] & 1;
+                        V[ x ] /= 2;
+
                         continue;
                     case 0x0007:
-                        printf( "8xy7: Set Vx = Vy - Vx, Set VF = NOT borrow" );
+                        printf( "8xy7: Set V%X = V%X - V%X, Set VF = NOT borrow", x, y, x );
+
+                        V[ 0xF ] = ( V[ y ] > V[ x ] ) ? 1 : 0;
+                        V[ x ] = V[ y ] - V[ x ];
+
                         continue;
                     case 0x000E:
-                        printf( "8xyE: Set Vx = Vx SHL 1" );
+                        printf( "8xyE: Set V%X = V%X SHL 1", x, x );
+
+                        V[ 0xF ] = ( V[ x ] & 128 ) >> 7;
+                        V[ x ] *= 2;
+
                         continue;
                 }
                 break;
