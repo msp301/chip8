@@ -49,10 +49,8 @@ int main(int argc, char** argv)
 
     for( pc = 0x200; pc < ( fsize + 0x200 ); pc += 2 )
     {
-        unsigned char x;
-        unsigned char y;
-        unsigned char kk;
-        unsigned short result;
+        unsigned char kk, x, y;
+        unsigned short nnn, result;
 
         opcode = memory[ pc ] << 8 | memory[ pc + 1 ];
 
@@ -219,7 +217,12 @@ int main(int argc, char** argv)
 
                 continue;
             case 0xA000:
+                nnn = ( opcode & 0x0FFF );
+
                 printf( "Annn: Set I = %03x", opcode & 0x0FFF );
+
+                I = nnn;
+
                 continue;
             case 0xB000:
                 printf( "Bnnn: Jump to address %03x + V0", opcode & 0x0FFF );
