@@ -78,7 +78,12 @@ int main(int argc, char** argv)
                 printf( "Execute subroutine at address: %04x", opcode & 0x0FFF );
                 continue;
             case 0x1000:
-                printf( "Jump to address: %04x", opcode & 0x0FFF );
+                nnn = ( opcode & 0x0FFF );
+
+                printf( "Jump to address: %04x", nnn );
+
+                pc = nnn;
+
                 continue;
             case 0x2000:
                 printf( "Call subroutine at address : %04x", opcode & 0x0FFF );
