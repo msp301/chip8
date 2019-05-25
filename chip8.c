@@ -50,6 +50,7 @@ int main(int argc, char** argv)
     for( pc = 0x200; pc < ( fsize + 0x200 ); pc += 2 )
     {
         unsigned char x;
+        unsigned char y;
         unsigned char kk;
 
         opcode = memory[ pc ] << 8 | memory[ pc + 1 ];
@@ -98,7 +99,16 @@ int main(int argc, char** argv)
                 printf( "4xkk: Skip next if Vx != kk" );
                 continue;
             case 0x5000:
-                printf( "5xy0: Skip next if Vx = Vy" );
+                x = ( opcode & 0x0F00 ) >> 8;
+                y = ( opcode & 0x00F0 ) >> 4;
+
+                printf( "5xy0: Skip next if V%X = V%X", x, y );
+
+                if( V[ x ] == V[ y ] )
+                {
+                    pc += 2;
+                }
+
                 continue;
             case 0x6000:
                 x  = ( opcode & 0x0F00 ) >> 8;
