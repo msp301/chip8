@@ -64,6 +64,12 @@ int main(int argc, char** argv)
                 {
                     case 0x00E0:
                         printf( "Clear screen" );
+
+                        for( int i = 0; i < ( 64 * 32 ); i++ )
+                        {
+                            gfx[ i ] = 0;
+                        }
+
                         continue;
                     case 0x00EE:
                         printf( "Return from subroutine" );
