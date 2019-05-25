@@ -73,6 +73,10 @@ int main(int argc, char** argv)
                         continue;
                     case 0x00EE:
                         printf( "Return from subroutine" );
+
+                        pc = stack[ stack_ptr ];
+                        stack_ptr -= 1;
+
                         continue;
                 }
                 break;
@@ -91,7 +95,14 @@ int main(int argc, char** argv)
 
                 continue;
             case 0x2000:
-                printf( "Call subroutine at address : %04x", opcode & 0x0FFF );
+                nnn = ( opcode & 0x0FFF );
+
+                printf( "Call subroutine at address : %04x", nnn );
+
+                stack_ptr++;
+                stack[ stack_ptr ] = pc;
+                pc = nnn;
+
                 continue;
             case 0x3000:
                 x  = ( opcode & 0x0F00 ) >> 8;
