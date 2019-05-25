@@ -85,6 +85,14 @@ int main(int argc, char** argv)
             case 0x4000:
                 printf( "4xkk: Skip next if Vx != kk" );
                 continue;
+            case 0x5000:
+                printf( "5xy0: Skip next if Vx = Vy" );
+                continue;
+            case 0x6000:
+                printf( "6xkk: Set Vx = kk" );
+                continue;
+            case 0x7000:
+                printf( "7xkk: Set Vx = Vx + kk" );
                 continue;
         }
     }
