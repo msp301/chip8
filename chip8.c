@@ -129,7 +129,13 @@ int main(int argc, char** argv)
 
                 continue;
             case 0x7000:
-                printf( "7xkk: Set Vx = Vx + kk" );
+                x  = ( opcode & 0x0F00 ) >> 8;
+                kk = ( opcode & 0x00FF );
+
+                printf( "7xkk: Set V%X += %02x", x, kk );
+
+                V[ x ] = V[ x ] + kk;
+
                 continue;
             case 0x8000:
                 switch( opcode & 0x000F )
