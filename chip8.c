@@ -47,38 +47,32 @@ int main(int argc, char** argv)
 
     printf( "NUM | CODE | ACTION" );
 
-    pc = 0x200;
-    while( pc < ( fsize + 0x200 ) )
+    for( pc = 0x200; pc < ( fsize + 0x200 ); pc += 2 )
     {
-        // Read the opcode
         opcode = memory[ pc ] << 8 | memory[ pc + 1 ];
 
-        printf( "\n%03hhX | %04hhX | ", pc, opcode );
+        printf( "\n%03x | %04x | ", pc, opcode );
 
-        pc += 2;
-        int unknown = 0;
-        switch( opcode & 0x00FF )
+        switch( opcode & 0xFF00 )
         {
-            case 0x00E0:
-                printf( "Clear screen" );
+            case 0x0000:
+                switch( opcode & 0x00FF )
+                {
+                    case 0x00E0:
+                        printf( "Clear screen" );
+                        continue;
+                    case 0x00EE:
+                        printf( "Return from subroutine" );
+                        continue;
+                }
                 break;
-            case 0x00EE:
-                printf( "Return from subroutine" );
-                break;
-            default:
-                unknown = 1;
-        }
-
-        if( unknown == 0 )
-        {
-            continue;
         }
 
         switch( opcode & 0xF000 )
         {
             case 0x0000:
-                printf( "Execute subroutine at address: %04hhX", opcode );
-                break;
+                printf( "Execute subroutine at address: %04x", opcode & 0x0FFF );
+                continue;
         }
     }
 
