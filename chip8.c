@@ -207,7 +207,16 @@ int main(int argc, char** argv)
                 }
                 break;
             case 0x9000:
-                printf( "9xy0: Skip next if Vx != Vy" );
+                x = ( opcode & 0x0F00 ) >> 8;
+                y = ( opcode & 0x00F0 ) >> 4;
+
+                printf( "9xy0: Skip next if V%X != V%X", x, y );
+
+                if( V[ x ] != V[ y ] )
+                {
+                    pc += 2;
+                }
+
                 continue;
             case 0xA000:
                 printf( "Annn: Set I = %03x", opcode & 0x0FFF );
