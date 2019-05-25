@@ -225,7 +225,12 @@ int main(int argc, char** argv)
 
                 continue;
             case 0xB000:
+                nnn = ( opcode & 0x0FFF );
+
                 printf( "Bnnn: Jump to address %03x + V0", opcode & 0x0FFF );
+
+                pc = nnn + V[ 0 ];
+
                 continue;
             case 0xC000:
                 printf( "Cxkk: Vx = rand byte AND kk" );
