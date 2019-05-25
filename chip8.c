@@ -141,6 +141,45 @@ int main(int argc, char** argv)
             case 0xD000:
                 printf( "Dxyn: Display sprite" );
                 continue;
+            case 0xE000:
+                switch( opcode & 0x00FF )
+                {
+                    case 0x009E:
+                        printf( "Ex9E: Skip next if keypress = Vx" );
+                        continue;
+                    case 0x00A1:
+                        printf( "ExA1: Skip next if keypress != Vx" );
+                        continue;
+                }
+                break;
+            case 0xF000:
+                switch( opcode & 0x00FF )
+                {
+                    case 0x0007:
+                        printf( "Fx07: Vx = delay timer" );
+                        continue;
+                    case 0x000A:
+                        printf( "Fx0A: Wait for key press. Store in Vx" );
+                        continue;
+                    case 0x0018:
+                        printf( "Fx18: Sound timer = Vx" );
+                        continue;
+                    case 0x001E:
+                        printf( "Fx1E: I = I + Vx" );
+                        continue;
+                    case 0x0029:
+                        printf( "Fx29: I = Sprint location for digit Vx" );
+                        continue;
+                    case 0x0033:
+                        printf( "Fx33: BCD of Vx at I, I+1 and I+2" );
+                        continue;
+                    case 0x0055:
+                        printf( "Fx55: Store registers V0 - Vx in memory starting at location I" );
+                        continue;
+                    case 0x0065:
+                        printf( "Fx65: Read registers V0 - Vx from memory starting at location I" );
+                        continue;
+                }
         }
     }
 
