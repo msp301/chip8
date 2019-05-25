@@ -96,7 +96,16 @@ int main(int argc, char** argv)
 
                 continue;
             case 0x4000:
-                printf( "4xkk: Skip next if Vx != kk" );
+                x  = ( opcode & 0x0F00 ) >> 8;
+                kk = ( opcode & 0x00FF );
+
+                printf( "4xkk: Skip next if V%X != %02x", x, kk );
+
+                if( V[ x ] != kk )
+                {
+                    pc += 2;
+                }
+
                 continue;
             case 0x5000:
                 x = ( opcode & 0x0F00 ) >> 8;
