@@ -126,6 +126,21 @@ int main(int argc, char** argv)
                         continue;
                 }
                 break;
+            case 0x9000:
+                printf( "9xy0: Skip next if Vx != Vy" );
+                continue;
+            case 0xA000:
+                printf( "Annn: Set I = %03x", opcode & 0x0FFF );
+                continue;
+            case 0xB000:
+                printf( "Bnnn: Jump to address %03x + V0", opcode & 0x0FFF );
+                continue;
+            case 0xC000:
+                printf( "Cxkk: Vx = rand byte AND kk" );
+                continue;
+            case 0xD000:
+                printf( "Dxyn: Display sprite" );
+                continue;
         }
     }
 
