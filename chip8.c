@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 // TODO:
@@ -233,7 +234,13 @@ int main(int argc, char** argv)
 
                 continue;
             case 0xC000:
-                printf( "Cxkk: Vx = rand byte AND kk" );
+                x  = ( opcode & 0x0F00 ) >> 8;
+                kk = ( opcode & 0x00FF );
+
+                printf( "Cxkk: V%X = rand byte AND %02x", x, kk );
+
+                V[ x ] = ( rand() % 255 ) & kk;
+
                 continue;
             case 0xD000:
                 printf( "Dxyn: Display sprite" );
