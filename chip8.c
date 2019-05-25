@@ -80,10 +80,11 @@ int main(int argc, char** argv)
                 printf( "Call subroutine at address : %04x", opcode & 0x0FFF );
                 continue;
             case 0x3000:
-                printf( "3xkk: Skip next if Vx = kk\n" );
+                printf( "3xkk: Skip next if Vx = kk" );
                 continue;
             case 0x4000:
-                printf( "4xkk: Skip next if Vx != kk\n" );
+                printf( "4xkk: Skip next if Vx != kk" );
+                continue;
                 continue;
         }
     }
