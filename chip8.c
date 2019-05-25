@@ -11,6 +11,26 @@
 // 7. Read keypad
 // 8. Goto step 5
 
+unsigned char font[ 80 ] =
+{
+    0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+    0x20, 0x60, 0x20, 0x20, 0x70, // 1
+    0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+    0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+    0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+    0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+    0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+    0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+    0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+    0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+    0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+    0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+    0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+    0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+    0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+    0xF0, 0x80, 0xF0, 0x80, 0x80, // F
+};
+
 int main(int argc, char** argv)
 {
     unsigned char memory[ 4096 ]; // 4K 8-bit memory
@@ -45,6 +65,13 @@ int main(int argc, char** argv)
     // Store ROM in memory
     fread( memory+0x200, fsize, 1, file );
     fclose( file );
+
+
+    // Load font sprites into memory
+    for( int i = 0; i < 80; i++ )
+    {
+        memory[ i ] = font[ i ];
+    }
 
     printf( "NUM | CODE | ACTION" );
 
@@ -293,7 +320,12 @@ int main(int argc, char** argv)
                         printf( "Fx1E: I = I + Vx" );
                         continue;
                     case 0x0029:
-                        printf( "Fx29: I = Sprint location for digit Vx" );
+                        x  = ( opcode & 0x0F00 ) >> 8;
+
+                        printf( "Fx29: I = Sprite location for digit Vx" );
+
+                        I = V[ x ] * 5;
+
                         continue;
                     case 0x0033:
                         printf( "Fx33: BCD of Vx at I, I+1 and I+2" );
