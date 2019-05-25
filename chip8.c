@@ -88,7 +88,7 @@ int main(int argc, char** argv)
                 x  = ( opcode & 0x0F00 ) >> 8;
                 kk = ( opcode & 0x00FF );
 
-                printf( "3xkk: Skip next if V%d = %02x", x, kk );
+                printf( "3xkk: Skip next if V%X = %02x", x, kk );
 
                 if( V[ x ] == kk )
                 {
