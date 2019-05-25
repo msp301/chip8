@@ -94,6 +94,38 @@ int main(int argc, char** argv)
             case 0x7000:
                 printf( "7xkk: Set Vx = Vx + kk" );
                 continue;
+            case 0x8000:
+                switch( opcode & 0x000F )
+                {
+                    case 0x0000:
+                        printf( "8xy0: Set Vx = Vy" );
+                        continue;
+                    case 0x0001:
+                        printf( "8xy1: Set Vx = Vx OR Vy" );
+                        continue;
+                    case 0x0002:
+                        printf( "8xy2: Set Vx = Vx AND Vy" );
+                        continue;
+                    case 0x0003:
+                        printf( "8xy3: Set Vx = Vx XOR Vy" );
+                        continue;
+                    case 0x0004:
+                        printf( "8xy4: Set Vx = Vx + Vy, Set VF = carry" );
+                        continue;
+                    case 0x0005:
+                        printf( "8xy5: Set Vx = Vx - Vy, Set VF = NOT borrow" );
+                        continue;
+                    case 0x0006:
+                        printf( "8xy6: Set Vx = Vx SHR 1" );
+                        continue;
+                    case 0x0007:
+                        printf( "8xy7: Set Vx = Vy - Vx, Set VF = NOT borrow" );
+                        continue;
+                    case 0x000E:
+                        printf( "8xyE: Set Vx = Vx SHL 1" );
+                        continue;
+                }
+                break;
         }
     }
 
